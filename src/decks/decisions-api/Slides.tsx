@@ -1,28 +1,27 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
+import { Face, Mark } from "../../devday/Face";
+import { AiLabsLogo, CodexWordmark, OpenAIWordmark } from "../../devday/Brand";
+import { FACE_PALETTE, type FaceConfig } from "../../devday/faces";
+import { DEVDAY_EVENT } from "../../devday/event";
 import { SlideFrame } from "../kit/layouts";
 import "./decisions-api.css";
 
 /*
- * Réplica del PPTX de Frank (16.67in × 9.375in, Arial).
- * x/y: % del ancho/alto originales → top = y·0.5625 cqw (alto = 56.25% del ancho).
+ * Réplica del PPTX de Frank (16.67in × 9.375in) con el branding del kit:
+ * Geist, tokens --slide-* (tema claro/oscuro), caras DevDay y footer del evento.
+ * x/y: % del slide original → top = y·0.5625 cqw (alto = 56.25% del ancho).
  * sz: puntos → cqw (1 cqw = 12 pt en un slide de 1200 pt de ancho).
  */
 
-const INK = "#171717";
-const PAPER = "#FAFAF7";
-const MUTE = "#66685E";
-const MUTE_D = "#C5C5C5";
-const MUTE_D2 = "#C4C4C4";
-const SUBTLE_D = "#C6C6C6";
-const BLUE = "#3D64FF";
-const PURPLE = "#9147FF";
-const GREEN = "#32B544";
-const ORANGE = "#FF8700";
-const GRAY_F = "#DDDDDA";
-const CARD_L = "#EEEEEA";
-const CARD_D = "#242424";
-const RULE = "#CDCDC8";
-const BAR = "#A9A9A4";
+const FG = "var(--slide-fg)";
+const BG = "var(--slide-bg)";
+const MU = "var(--slide-muted)";
+const SF = "var(--slide-surface)";
+const BD = "var(--slide-border)";
+const BL = "var(--slide-blue)";
+const PU = "var(--slide-purple)";
+const GR = "var(--slide-green)";
+const OR = "var(--slide-orange)";
 
 /** Texto posicionado: x,y en % del slide original; sz en puntos. */
 function E({
@@ -31,7 +30,7 @@ function E({
   w,
   sz,
   b,
-  c = INK,
+  c = FG,
   children,
 }: {
   x: number;
@@ -59,40 +58,44 @@ function E({
   );
 }
 
-/** Círculo de color con ojos de caracteres ('0 0', '+ +', '><', '− −', '* *', '^ ^', '0 <'). */
-function Face({
-  x,
-  y,
-  d,
-  bg,
-  eyes,
-  sz,
-}: {
-  x: number;
-  y: number;
-  d: number;
-  bg: string;
-  eyes: string;
-  sz: number;
-}) {
+/* Carita DevDay equivalente a los ojos del PPTX. */
+const FACES = {
+  curious: (color: string): FaceConfig => ({ color, expression: "curious" }),
+  plus: (color: string): FaceConfig => ({ color, expression: "plus" }),
+  squeeze: (color: string): FaceConfig => ({ color, expression: "squeeze" }),
+  sleepy: (color: string): FaceConfig => ({ color, expression: "sleepy" }),
+  spark: (color: string): FaceConfig => ({ color, expression: "spark" }),
+  happy: (color: string): FaceConfig => ({ color, expression: "happy" }),
+  wink: (color: string): FaceConfig => ({ color, expression: "wink" }),
+};
+
+/** Cara DevDay posicionada (d = diámetro en cqw). */
+function KFace({ x, y, d, cfg }: { x: number; y: number; d: number; cfg: FaceConfig }) {
   return (
     <span
       className="fc-face"
-      style={{
-        left: `${x}cqw`,
-        top: `${y * 0.5625}cqw`,
-        width: `${d}cqw`,
-        height: `${d}cqw`,
-        background: bg,
-      }}
+      style={{ left: `${x}cqw`, top: `${y * 0.5625}cqw`, width: `${d}cqw`, height: `${d}cqw` }}
       aria-hidden="true"
     >
-      <i style={{ fontSize: `${(sz / 12).toFixed(3)}cqw` }}>{eyes}</i>
+      <Face config={cfg} />
     </span>
   );
 }
 
-/** Rectángulo posicionado (tarjetas, reglas, barras). */
+/** Signo "?" del PPTX → Mark del kit. */
+function QMark({ x, y, d }: { x: number; y: number; d: number }) {
+  return (
+    <span
+      className="fc-face"
+      style={{ left: `${x}cqw`, top: `${y * 0.5625}cqw`, width: `${d}cqw`, height: `${d}cqw` }}
+      aria-hidden="true"
+    >
+      <Mark kind="question" color={BL} />
+    </span>
+  );
+}
+
+/** Rectángulo posicionado (tarjetas, reglas y barras). */
 function Box({
   x,
   y,
@@ -130,36 +133,9 @@ function Box({
   );
 }
 
-function Head({ n, dark }: { n: string; dark?: boolean }) {
+function P({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <>
-      <E x={5.25} y={5.11} sz={21.75} b c={dark ? PAPER : INK}>
-        DevDay
-      </E>
-      <E x={5.25} y={9.22} sz={15.75} c={dark ? MUTE_D : MUTE}>
-        El Salvador 2026
-      </E>
-      <E x={86.88} y={5.56} sz={15} c={dark ? MUTE_D : MUTE}>
-        {n} / 12
-      </E>
-    </>
-  );
-}
-
-function P({
-  n,
-  dark,
-  label,
-  children,
-}: {
-  n: string;
-  dark?: boolean;
-  label: string;
-  children: ReactNode;
-}) {
-  return (
-    <SlideFrame footer={false} className={`fc-pptx ${dark ? "fc-dark" : "fc-light"}`} label={label}>
-      <Head n={n} dark={dark} />
+    <SlideFrame className="fc-pptx" label={label}>
       {children}
     </SlideFrame>
   );
@@ -168,18 +144,26 @@ function P({
 /* ---------- 01 · Portada ---------- */
 export function AiCodingCoverSlide() {
   return (
-    <P n="01" label="AI Coding: Generar código es fácil. Construir software es otra historia.">
-      <E x={77.5} y={9.67} sz={15.75} c={MUTE}>
-        AI Labs Community
-      </E>
-      <E x={75.74} y={18.2} sz={52.8} c={BLUE}>
-        ?
-      </E>
-      <Face x={82.61} y={17.22} d={8.8} bg={PURPLE} eyes="0 0" sz={38.02} />
-      <Face x={75.19} y={31.89} d={5.22} bg={GRAY_F} eyes="* *" sz={22.57} />
-      <Face x={83.16} y={38.24} d={8.53} bg={GREEN} eyes="+ +" sz={36.83} />
-      <Face x={76.29} y={49.49} d={18.7} bg={BLUE} eyes="&gt;&lt;" sz={80.78} />
-      <Face x={69.69} y={58.78} d={9.62} bg={ORANGE} eyes="− −" sz={41.58} />
+    <P label="AI Coding: Generar código es fácil. Construir software es otra historia.">
+      <div className="fc-top">
+        <OpenAIWordmark className="fc-openai" />
+        <span className="fc-rule" aria-hidden="true" />
+        <span className="fc-event">
+          {DEVDAY_EVENT.name} {DEVDAY_EVENT.city}
+        </span>
+      </div>
+      <div className="fc-top fc-top--brands">
+        <CodexWordmark className="fc-codex" />
+        <span className="fc-rule" aria-hidden="true" />
+        <span className="fc-organiza">Organiza</span>
+        <AiLabsLogo className="fc-ailabs" />
+      </div>
+      <QMark x={75.74} y={18.2} d={4.0} />
+      <KFace x={82.61} y={17.22} d={8.8} cfg={FACES.curious(FACE_PALETTE.purple)} />
+      <KFace x={75.19} y={31.89} d={5.22} cfg={FACES.spark(FACE_PALETTE.gray)} />
+      <KFace x={83.16} y={38.24} d={8.53} cfg={FACES.plus(FACE_PALETTE.green)} />
+      <KFace x={76.29} y={49.49} d={18.7} cfg={FACES.squeeze(FACE_PALETTE.blue)} />
+      <KFace x={69.69} y={58.78} d={9.62} cfg={FACES.sleepy(FACE_PALETTE.orange)} />
       <E x={5.25} y={24.0} sz={94.5} b>
         AI Coding:
       </E>
@@ -189,14 +173,14 @@ export function AiCodingCoverSlide() {
       <E x={5.25} y={51.78} sz={58.5} b>
         Construir software es
       </E>
-      <E x={5.25} y={63.33} sz={66} b c={BLUE}>
+      <E x={5.25} y={63.33} sz={66} b c={BL}>
         otra historia.
       </E>
-      <Box x={5.38} y={85.11} w={0.12} h={6.78} bg={BAR} />
-      <E x={7.25} y={84.44} sz={21.75} b>
+      <Box x={5.38} y={84.0} w={0.12} h={6.78} bg={BD} />
+      <E x={7.25} y={83.33} sz={21.75} b>
         Frank Calderón
       </E>
-      <E x={7.25} y={89.11} sz={18.75} c={MUTE}>
+      <E x={7.25} y={88.0} sz={18.75} c={MU}>
         Software Developer
       </E>
     </P>
@@ -206,18 +190,18 @@ export function AiCodingCoverSlide() {
 /* ---------- 02 · ¿La IA nos va a reemplazar? ---------- */
 export function ReemplazarSlide() {
   return (
-    <P n="02" dark label="¿La IA nos va a reemplazar?">
-      <Face x={81.56} y={27.22} d={12.81} bg={ORANGE} eyes="− −" sz={55.35} />
-      <E x={5.25} y={30.56} sz={82.5} b c={PAPER}>
+    <P label="¿La IA nos va a reemplazar?">
+      <KFace x={81.56} y={27.22} d={12.81} cfg={FACES.sleepy(FACE_PALETTE.orange)} />
+      <E x={5.25} y={30.56} sz={82.5} b>
         ¿La IA nos va
       </E>
-      <E x={5.25} y={45.0} sz={82.5} b c={BLUE}>
+      <E x={5.25} y={45.0} sz={82.5} b c={BL}>
         a reemplazar?
       </E>
-      <E x={5.25} y={69.44} sz={36.75} c={PAPER}>
+      <E x={5.25} y={69.44} sz={36.75}>
         ¿O va a transformar la manera
       </E>
-      <E x={5.25} y={76.89} sz={36.75} c={PAPER}>
+      <E x={5.25} y={76.89} sz={36.75}>
         en que trabajamos?
       </E>
     </P>
@@ -242,57 +226,57 @@ export function TareasSlide() {
   ];
   const rows = [47.11, 54.0, 60.89, 67.78, 74.67];
   return (
-    <P n="03" dark label="La IA está transformando nuestras tareas">
-      <E x={5.25} y={32.33} sz={49.5} b c={PAPER}>
+    <P label="La IA está transformando nuestras tareas">
+      <E x={5.25} y={32.33} sz={49.5} b>
         La IA está
       </E>
-      <E x={5.25} y={42.0} sz={49.5} b c={PAPER}>
+      <E x={5.25} y={42.0} sz={49.5} b>
         transformando
       </E>
-      <E x={5.25} y={51.67} sz={49.5} b c={BLUE}>
+      <E x={5.25} y={51.67} sz={49.5} b c={BL}>
         nuestras tareas
       </E>
-      <E x={9.0} y={68.44} w={33.75} sz={22.5} c={SUBTLE_D}>
+      <E x={9.0} y={66.0} w={33.75} sz={22.5} c={MU}>
         No dejamos de programar.
         <br />
         Cambia cómo invertimos
         <br />
         nuestro tiempo.
       </E>
-      <Box x={47.5} y={34.44} w={20} h={52.22} bg={CARD_D} r={0.9} />
-      <Box x={73.12} y={34.44} w={20.62} h={52.22} bg={PAPER} r={0.9} />
-      <E x={50.12} y={38.0} sz={28.5} b c={PAPER}>
+      <Box x={47.5} y={34.44} w={20} h={52.22} bg={FG} r={0.9} />
+      <Box x={73.12} y={34.44} w={20.62} h={52.22} bg={SF} r={0.9} />
+      <E x={50.12} y={38.0} sz={28.5} b c={BG}>
         Antes
       </E>
-      <E x={75.75} y={38.0} sz={28.5} b c={INK}>
+      <E x={75.75} y={38.0} sz={28.5} b>
         Ahora
       </E>
       {antes.map(([icon, text], i) => (
         <span key={text}>
-          <E x={49.81} y={rows[i]} w={3.44} sz={22.5} c={PAPER}>
+          <E x={49.81} y={rows[i]} w={3.44} sz={22.5} c={BG}>
             {icon}
           </E>
-          <E x={53.56} y={rows[i]} w={13.44} sz={20.25} c={PAPER}>
+          <E x={53.56} y={rows[i]} w={13.44} sz={20.25} c={BG}>
             {text}
           </E>
         </span>
       ))}
       {ahora.map(([icon, text], i) => (
         <span key={text}>
-          <E x={75.0} y={rows[i]} w={3.44} sz={22.5} c={INK}>
+          <E x={75.0} y={rows[i]} w={3.44} sz={22.5}>
             {icon}
           </E>
-          <E x={78.75} y={rows[i]} w={13.75} sz={20.25} c={INK}>
+          <E x={78.75} y={rows[i]} w={13.75} sz={20.25}>
             {text}
           </E>
         </span>
       ))}
-      <E x={68.75} y={58.0} sz={35.25} c={PAPER}>
+      <E x={68.75} y={58.0} sz={35.25}>
         →
       </E>
-      <Face x={85.62} y={17.44} d={9.06} bg={PURPLE} eyes="^ ^" sz={39.15} />
-      <Face x={86.88} y={76.0} d={7.5} bg={ORANGE} eyes="− −" sz={32.4} />
-      <Face x={5.25} y={85.56} d={6.56} bg={GREEN} eyes="+ +" sz={28.35} />
+      <KFace x={85.62} y={17.44} d={9.06} cfg={FACES.happy(FACE_PALETTE.purple)} />
+      <KFace x={86.88} y={76.0} d={7.5} cfg={FACES.sleepy(FACE_PALETTE.orange)} />
+      <KFace x={5.25} y={85.56} d={6.56} cfg={FACES.plus(FACE_PALETTE.green)} />
     </P>
   );
 }
@@ -300,16 +284,16 @@ export function TareasSlide() {
 /* ---------- 04 · Escribir código ≠ desarrollar software ---------- */
 export function CodigoVsSoftwareSlide() {
   return (
-    <P n="04" label="Escribir código ≠ desarrollar software">
-      <Face x={82.81} y={21.56} d={10.31} bg={ORANGE} eyes="0 <" sz={44.55} />
+    <P label="Escribir código ≠ desarrollar software">
+      <KFace x={82.81} y={21.56} d={10.31} cfg={FACES.wink(FACE_PALETTE.orange)} />
       <E x={5.25} y={21.44} sz={58.5} b>
         Escribir código
       </E>
-      <E x={5.25} y={33.89} sz={46.5} c={MUTE}>
+      <E x={5.25} y={33.89} sz={46.5} c={MU}>
         ≠
       </E>
-      <Box x={5.25} y={46.67} w={89.38} h={0.33} bg={RULE} />
-      <E x={5.25} y={52.0} sz={58.5} b c={BLUE}>
+      <Box x={5.25} y={46.67} w={89.38} h={0.33} bg={BD} />
+      <E x={5.25} y={52.0} sz={58.5} b c={BL}>
         Desarrollar software
       </E>
       <E x={5.25} y={69.56} sz={30}>
@@ -325,20 +309,20 @@ export function CodigoVsSoftwareSlide() {
 /* ---------- 05 · La responsabilidad sigue siendo nuestra ---------- */
 export function ResponsabilidadSlide() {
   return (
-    <P n="05" dark label="La responsabilidad sigue siendo nuestra">
-      <E x={5.25} y={25.44} sz={69} b c={PAPER}>
+    <P label="La responsabilidad sigue siendo nuestra">
+      <E x={5.25} y={25.44} sz={69} b>
         La IA puede
       </E>
-      <E x={5.25} y={37.78} sz={69} b c={PAPER}>
+      <E x={5.25} y={37.78} sz={69} b>
         escribir código.
       </E>
-      <E x={5.25} y={54.56} sz={54} b c={PAPER}>
+      <E x={5.25} y={54.56} sz={54} b>
         Pero construir buen software
       </E>
-      <E x={5.25} y={65.78} sz={54} b c={PAPER}>
+      <E x={5.25} y={65.78} sz={54} b>
         sigue siendo
       </E>
-      <E x={5.25} y={77.0} sz={63.75} b c={BLUE}>
+      <E x={5.25} y={77.0} sz={63.75} b c={BL}>
         nuestra responsabilidad.
       </E>
     </P>
@@ -348,30 +332,28 @@ export function ResponsabilidadSlide() {
 /* ---------- 06 · 5 prácticas para desarrollar mejor con Codex ---------- */
 export function CincoPracticasSlide() {
   const items: [string, string, string][] = [
-    ["01", "Instrucciones", PURPLE],
-    ["02", "Contexto", BLUE],
-    ["03", "Herramientas", ORANGE],
-    ["04", "Especificaciones", GREEN],
-    ["05", "Validación", INK],
+    ["01", "Instrucciones", PU],
+    ["02", "Contexto", BL],
+    ["03", "Herramientas", OR],
+    ["04", "Especificaciones", GR],
+    ["05", "Validación", FG],
   ];
   const rows = [57.11, 62.78, 68.44, 74.11, 79.78];
   return (
-    <P n="06" label="5 prácticas para desarrollar mejor con Codex">
-      <E x={76.12} y={22.56} sz={48} c={BLUE}>
-        ?
-      </E>
-      <Face x={82.38} y={21.67} d={8.0} bg={PURPLE} eyes="0 0" sz={34.56} />
-      <Face x={75.62} y={35.0} d={4.75} bg={GRAY_F} eyes="* *" sz={20.52} />
-      <Face x={82.88} y={40.78} d={7.75} bg={GREEN} eyes="+ +" sz={33.48} />
-      <Face x={76.62} y={51.0} d={17.0} bg={BLUE} eyes="&gt;&lt;" sz={73.44} />
-      <Face x={70.62} y={59.44} d={8.75} bg={ORANGE} eyes="− −" sz={37.8} />
+    <P label="5 prácticas para desarrollar mejor con Codex">
+      <QMark x={76.12} y={22.56} d={3.8} />
+      <KFace x={82.38} y={21.67} d={8.0} cfg={FACES.curious(FACE_PALETTE.purple)} />
+      <KFace x={75.62} y={35.0} d={4.75} cfg={FACES.spark(FACE_PALETTE.gray)} />
+      <KFace x={82.88} y={40.78} d={7.75} cfg={FACES.plus(FACE_PALETTE.green)} />
+      <KFace x={76.62} y={51.0} d={17.0} cfg={FACES.squeeze(FACE_PALETTE.blue)} />
+      <KFace x={70.62} y={59.44} d={8.75} cfg={FACES.sleepy(FACE_PALETTE.orange)} />
       <E x={5.25} y={21.56} sz={61.5} b>
         5 prácticas para
       </E>
       <E x={5.25} y={32.33} sz={61.5} b>
         desarrollar mejor
       </E>
-      <E x={5.25} y={43.11} sz={61.5} b c={BLUE}>
+      <E x={5.25} y={43.11} sz={61.5} b c={BL}>
         con Codex
       </E>
       {items.map(([num, text, color], i) => (
@@ -384,7 +366,7 @@ export function CincoPracticasSlide() {
           </E>
         </span>
       ))}
-      <Box x={5.25} y={90.33} w={90.62} h={4.78} bg="transparent" border={`0.08cqw solid ${INK}`}>
+      <Box x={5.25} y={86.5} w={90.62} h={4.78} border={`0.08cqw solid ${FG}`}>
         <span className="fc-bar-text" style={{ fontSize: `${(21 / 12).toFixed(3)}cqw` }}>
           No se trata de escribir mejores prompts. Se trata de trabajar mejor.
         </span>
@@ -398,24 +380,22 @@ function PracticeHead({
   n,
   title,
   lede,
-  dark,
   kickerColor,
 }: {
   n: string;
   title: string;
   lede: string;
-  dark?: boolean;
   kickerColor?: string;
 }) {
   return (
     <>
-      <E x={5.25} y={18.44} sz={17.25} b c={kickerColor ?? (dark ? MUTE_D : MUTE)}>
+      <E x={5.25} y={18.44} sz={17.25} b c={kickerColor ?? MU}>
         {n} / 05
       </E>
-      <E x={5.25} y={24.89} sz={57} b c={dark ? PAPER : INK}>
+      <E x={5.25} y={24.89} sz={57} b>
         {title}
       </E>
-      <E x={5.25} y={37.33} sz={24} c={dark ? MUTE_D2 : MUTE}>
+      <E x={5.25} y={37.33} sz={24} c={MU}>
         {lede}
       </E>
     </>
@@ -425,9 +405,9 @@ function PracticeHead({
 /* ---------- 07 · Instrucciones ---------- */
 export function InstruccionesSlide() {
   return (
-    <P n="07" label="Instrucciones">
+    <P label="Instrucciones">
       <PracticeHead n="01" title="Instrucciones" lede="Define cómo debe trabajar tu agente." />
-      <Box x={5.25} y={49.11} w={68.12} h={31.11} bg={CARD_L} r={0.9} />
+      <Box x={5.25} y={49.11} w={68.12} h={31.11} bg={SF} r={0.9} />
       <E x={7.38} y={50.78} sz={28.5} b>
         AGENTS.md
       </E>
@@ -440,8 +420,8 @@ export function InstruccionesSlide() {
         <br />
         Reglas del proyecto
       </E>
-      <Face x={79.38} y={52.44} d={13.75} bg={PURPLE} eyes="0 0" sz={59.4} />
-      <E x={5.25} y={85.11} sz={26.25} b>
+      <KFace x={79.38} y={52.44} d={13.75} cfg={FACES.curious(FACE_PALETTE.purple)} />
+      <E x={5.25} y={84.0} sz={26.25} b>
         No hagas que tu agente adivine cómo trabajas.
       </E>
     </P>
@@ -451,20 +431,20 @@ export function InstruccionesSlide() {
 /* ---------- 08 · Contexto ---------- */
 export function ContextoSlide() {
   return (
-    <P n="08" label="Contexto">
+    <P label="Contexto">
       <PracticeHead n="02" title="Contexto" lede="La IA necesita conocer tu proyecto." />
       <E x={5.25} y={51.67} w={40.62} sz={38.25} b>
         Documentación
         <br />
         Requerimientos
       </E>
-      <E x={50.25} y={51.67} w={43.75} sz={38.25} b c={BLUE}>
+      <E x={50.25} y={51.67} w={43.75} sz={38.25} b c={BL}>
         Arquitectura
         <br />
         Reglas de negocio
       </E>
-      <Box x={5.25} y={80.22} w={88.75} h={0.33} bg={RULE} />
-      <E x={5.25} y={83.89} sz={23.25} b>
+      <Box x={5.25} y={80.22} w={88.75} h={0.33} bg={BD} />
+      <E x={5.25} y={82.5} sz={23.25} b>
         El problema no siempre es que la IA no sepa programar.
         <br />
         A veces no conoce nuestro proyecto.
@@ -476,34 +456,33 @@ export function ContextoSlide() {
 /* ---------- 09 · Herramientas ---------- */
 export function HerramientasSlide() {
   const cols = [
-    { face: { x: 8.06, bg: BLUE, eyes: "><" }, label: "Codex", lx: 5.25 },
-    { face: { x: 40.31, bg: PURPLE, eyes: "0 0" }, label: "MCP", lx: 37.5 },
-    { face: { x: 72.56, bg: ORANGE, eyes: "− −" }, label: "Integraciones", lx: 69.75 },
+    { cfg: FACES.squeeze(FACE_PALETTE.blue), x: 8.06, label: "Codex", lx: 5.25 },
+    { cfg: FACES.curious(FACE_PALETTE.purple), x: 40.31, label: "MCP", lx: 37.5 },
+    { cfg: FACES.sleepy(FACE_PALETTE.orange), x: 72.56, label: "Integraciones", lx: 69.75 },
   ];
   return (
-    <P n="09" dark label="Herramientas">
+    <P label="Herramientas">
       <PracticeHead
         n="03"
         title="Herramientas"
         lede="Dale a tu agente las herramientas correctas."
-        dark
-        kickerColor={ORANGE}
+        kickerColor={OR}
       />
-      {cols.map(({ face, label, lx }) => (
+      {cols.map(({ cfg, x, label, lx }) => (
         <span key={label}>
-          <Face x={face.x} y={49.22} d={9.38} bg={face.bg} eyes={face.eyes} sz={40.5} />
-          <E x={lx} y={68.11} sz={27} b c={PAPER}>
+          <KFace x={x} y={49.22} d={9.38} cfg={cfg} />
+          <E x={lx} y={68.11} sz={27} b>
             {label}
           </E>
         </span>
       ))}
-      <E x={5.25} y={77.56} w={45.31} sz={23.25} c={PAPER}>
+      <E x={5.25} y={77.56} w={45.31} sz={23.25}>
         Repositorios y documentación
       </E>
-      <E x={50.25} y={77.56} w={45.31} sz={23.25} c={PAPER}>
+      <E x={50.25} y={77.56} w={45.31} sz={23.25}>
         Servicios y herramientas de desarrollo
       </E>
-      <E x={5.25} y={86.22} sz={22.5} c={PAPER}>
+      <E x={5.25} y={84.0} sz={22.5}>
         Un agente es más útil cuando puede actuar
         <br />
         con el contexto y los permisos adecuados.
@@ -517,7 +496,7 @@ export function EspecificacionesSlide() {
   const items = ["Problema", "Requerimientos", "Plan", "Implementación"];
   const rows = [50.11, 57.44, 64.78, 72.11];
   return (
-    <P n="10" label="Especificaciones">
+    <P label="Especificaciones">
       <PracticeHead n="04" title="Especificaciones" lede="Primero define. Después construye." />
       <E x={5.25} y={52.11} sz={41.25} b>
         Spec-Driven
@@ -526,13 +505,24 @@ export function EspecificacionesSlide() {
       </E>
       {items.map((text, i) => (
         <span key={text}>
-          <Face x={54.06} y={rows[i] + 1.78} d={1.38} bg={GREEN} eyes="" sz={1} />
+          <span
+            className="fc-face"
+            style={{
+              left: "54.06cqw",
+              top: `${(rows[i] + 1.78) * 0.5625}cqw`,
+              width: "1.38cqw",
+              height: "1.38cqw",
+              borderRadius: "50%",
+              background: GR,
+            }}
+            aria-hidden="true"
+          />
           <E x={57.0} y={rows[i]} sz={26.25}>
             {text}
           </E>
         </span>
       ))}
-      <E x={5.25} y={84.44} sz={24} b>
+      <E x={5.25} y={83.0} sz={24} b>
         La calidad de una solución comienza con la claridad del problema.
       </E>
     </P>
@@ -542,25 +532,24 @@ export function EspecificacionesSlide() {
 /* ---------- 11 · Validación ---------- */
 export function ValidacionSlide() {
   return (
-    <P n="11" dark label="Validación">
+    <P label="Validación">
       <PracticeHead
         n="05"
         title="Validación"
         lede="Confía en el proceso. Verifica el resultado."
-        dark
-        kickerColor={BLUE}
+        kickerColor={BL}
       />
-      <E x={5.25} y={51.44} w={40.62} sz={44.25} b c={PAPER}>
+      <E x={5.25} y={51.44} w={40.62} sz={44.25} b>
         Code review
         <br />
         Testing
       </E>
-      <E x={50.25} y={51.44} w={45} sz={39} b c={BLUE}>
+      <E x={50.25} y={51.44} w={45} sz={39} b c={BL}>
         Seguridad
         <br />
         Criterios de aceptación
       </E>
-      <E x={5.25} y={82.11} sz={31.5} b c={PAPER}>
+      <E x={5.25} y={81.0} sz={31.5} b>
         Delegar la implementación no significa
         <br />
         delegar la responsabilidad.
@@ -572,35 +561,33 @@ export function ValidacionSlide() {
 /* ---------- 12 · Cierre ---------- */
 export function CierreSlide() {
   return (
-    <P n="12" label="El futuro: construir mejores soluciones">
-      <E x={75.67} y={18.74} sz={52.2} c={BLUE}>
-        ?
-      </E>
-      <Face x={82.47} y={17.78} d={8.7} bg={PURPLE} eyes="0 0" sz={37.58} />
-      <Face x={75.12} y={32.28} d={5.17} bg={GRAY_F} eyes="* *" sz={22.32} />
-      <Face x={83.01} y={38.56} d={8.43} bg={GREEN} eyes="+ +" sz={36.41} />
-      <Face x={76.21} y={49.68} d={18.49} bg={BLUE} eyes="&gt;&lt;" sz={79.87} />
-      <Face x={69.69} y={58.86} d={9.52} bg={ORANGE} eyes="− −" sz={41.11} />
+    <P label="El futuro: construir mejores soluciones">
+      <QMark x={75.67} y={18.74} d={4.0} />
+      <KFace x={82.47} y={17.78} d={8.7} cfg={FACES.curious(FACE_PALETTE.purple)} />
+      <KFace x={75.12} y={32.28} d={5.17} cfg={FACES.spark(FACE_PALETTE.gray)} />
+      <KFace x={83.01} y={38.56} d={8.43} cfg={FACES.plus(FACE_PALETTE.green)} />
+      <KFace x={76.21} y={49.68} d={18.49} cfg={FACES.squeeze(FACE_PALETTE.blue)} />
+      <KFace x={69.69} y={58.86} d={9.52} cfg={FACES.sleepy(FACE_PALETTE.orange)} />
       <E x={5.25} y={24.22} sz={57.75} b>
         El futuro no se trata
       </E>
       <E x={5.25} y={34.44} sz={57.75} b>
         de escribir más código.
       </E>
-      <E x={5.25} y={48.33} sz={51} b c={BLUE}>
+      <E x={5.25} y={48.33} sz={51} b c={BL}>
         Se trata de construir
       </E>
-      <E x={5.25} y={58.11} sz={51} b c={BLUE}>
+      <E x={5.25} y={58.11} sz={51} b c={BL}>
         mejores soluciones.
       </E>
       <E x={5.25} y={74.33} sz={27.75} b>
         Aprender&nbsp;&nbsp;&nbsp;→&nbsp;&nbsp;&nbsp;Construir&nbsp;&nbsp;&nbsp;→&nbsp;&nbsp;&nbsp;Compartir
       </E>
-      <Box x={5.38} y={85.11} w={0.12} h={6.78} bg={BAR} />
-      <E x={7.25} y={84.44} sz={21.75} b>
+      <Box x={5.38} y={84.0} w={0.12} h={6.78} bg={BD} />
+      <E x={7.25} y={83.33} sz={21.75} b>
         Frank Calderón
       </E>
-      <E x={7.25} y={89.11} sz={18.75} c={MUTE}>
+      <E x={7.25} y={88.0} sz={18.75} c={MU}>
         frankcalderon.dev&nbsp;&nbsp;@frankcalderondev
       </E>
     </P>

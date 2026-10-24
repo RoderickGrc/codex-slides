@@ -1,19 +1,48 @@
 /*
- * AI Coding (Frank Calderon): réplica del PPTX original.
- * Elementos posicionados en cqw según la geometría del archivo;
- * fondos fijos crema (#FAFAF7) / negro (#111111) como en la presentación.
+ * AI Coding (Frank Calderon): réplica del PPTX con el branding del kit.
+ * Elementos posicionados en cqw; colores con tokens --slide-* para el tema.
  */
 
 .fc-pptx {
   padding: 0 !important;
-  font-family: Arial, Helvetica, sans-serif;
   letter-spacing: 0;
 }
-.fc-light {
-  background: #fafaf7 !important;
+
+/* Franja superior de la portada: OpenAI + evento / Codex + Organiza Ai Labs */
+.fc-top {
+  position: absolute;
+  top: 3cqw;
+  left: 5.25cqw;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 1.4cqw;
+  color: var(--slide-muted);
+  font-size: 1.1cqw;
+  font-weight: 550;
 }
-.fc-dark {
-  background: #111111 !important;
+.fc-top--brands {
+  right: 5.25cqw;
+  left: auto;
+  gap: 1.3cqw;
+}
+.fc-openai {
+  width: 7.6cqw;
+}
+.fc-codex {
+  width: 5.4cqw;
+}
+.fc-ailabs {
+  width: 8.4cqw;
+}
+.fc-organiza {
+  font-size: 1.05cqw;
+  font-weight: 500;
+}
+.fc-rule {
+  width: 0.08cqw;
+  height: 1.6cqw;
+  background: var(--slide-border);
 }
 
 /* Texto posicionado */
@@ -21,27 +50,14 @@
   position: absolute;
   display: block;
   line-height: 1.08;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   font-family: inherit;
 }
 
-/* Carita: círculo con ojos de caracteres en su mitad superior */
+/* Caras y marcas posicionadas */
 .fc-face {
   position: absolute;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  border-radius: 50%;
-}
-.fc-face i {
   display: block;
-  margin-top: 28%;
-  color: #171717;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: 0;
-  white-space: pre;
 }
 
 /* Rectángulos: tarjetas, reglas y barras */
@@ -53,7 +69,7 @@
 .fc-bar-text {
   display: block;
   padding-left: 0.8cqw;
-  color: #171717;
+  color: var(--slide-fg);
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.02em;
