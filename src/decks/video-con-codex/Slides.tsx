@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { speakers } from "../../devday/speakers";
 import { Crowd } from "../kit/Crowd";
 import { closingCrowd } from "../kit/crowd-layout";
@@ -27,7 +27,6 @@ import criterioEnArchivos from "./pages/15-criterio-en-archivos.html?raw";
 import aplicarElCriterio from "./pages/16-aplicar-el-criterio.html?raw";
 import sistemaCompleto from "./pages/17-sistema-completo.html?raw";
 import sureshot from "./pages/18-sureshot.html?raw";
-import aLasDemos from "./pages/19-a-las-demos.html?raw";
 
 /*
  * Every slide is the rendered markup of one page of
@@ -150,7 +149,63 @@ export const RegaloSlide = () => (
     </div>
   </Page>
 );
-export const ALasDemosSlide = () => <Page html={aLasDemos} className="to-demos" footer={false} />;
+/* The pipeline reel, stored in public/. Plays with sound on click; Space stays with the video. */
+function DemoVideo() {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [started, setStarted] = useState(false);
+  return (
+    <div className="demo-video">
+      <video
+        ref={ref}
+        src="/talks/video-con-codex/reel.mp4"
+        poster="/talks/video-con-codex/reel-poster.jpg"
+        controls={started}
+        playsInline
+        preload="metadata"
+        tabIndex={0}
+        onPlay={() => setStarted(true)}
+        onKeyDown={(event) => {
+          // Space stays with the player (it pauses or resumes) instead of advancing the slide.
+          if (event.key === " ") event.stopPropagation();
+        }}
+        aria-label="Reel del pipeline: cómo Codex aprende a ver, escuchar, editar, seguir reglas y revisar un video"
+      />
+      {!started && (
+        <button
+          type="button"
+          className="demo-play"
+          onClick={() => {
+            ref.current?.focus();
+            void ref.current?.play();
+          }}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 5.5v13l11-6.5z" fill="currentColor" />
+          </svg>
+          Reproducir con sonido
+        </button>
+      )}
+    </div>
+  );
+}
+
+export const ALasDemosSlide = () => (
+  <Page html="" footer={false}>
+    <div className="demo">
+      <div>
+        <p className="eyebrow">El sistema en la práctica · 0:40</p>
+        <h2 className="display">
+          Ya tiene ojos, oídos y herramientas. <span>Veamos el pipeline completo.</span>
+        </h2>
+      </div>
+      <DemoVideo />
+      <p className="demo-time">
+        <b>0:40</b>
+        un reel sobre este pipeline, editado y verificado con él
+      </p>
+    </div>
+  </Page>
+);
 
 /* Replaces the kit's closing slide: thanks, with rod.run first and its QR. */
 export function GraciasSlide() {

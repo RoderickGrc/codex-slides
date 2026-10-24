@@ -208,10 +208,10 @@ export const videoCodexDeck = defineTalk({
     {
       slug: "a-las-demos",
       title: "Ya tiene ojos, oídos y herramientas. Veamos el pipeline completo.",
-      kicker: "El sistema en la práctica · 0:15",
+      kicker: "El sistema en la práctica · 0:40",
       component: ALasDemosSlide,
-      guide: { intro: "Ya tiene ojos, oídos y herramientas. Veamos el pipeline completo." },
-      speakerNotes: { script: "Transición breve: «Ya vimos cómo un agente entiende escenas, texto y audio, edita con código, usa recursos y aplica criterio. El demo es un video que explica este pipeline y que se hizo con él: Codex lo editó en Remotion y sureshot lo verificó.»", timing: "0:15", cues: ["Cambiá a la proyección del demo."] },
+      guide: { intro: "Ya tiene ojos, oídos y herramientas. Veamos el pipeline completo en un reel de 40 segundos, editado y verificado con él." },
+      speakerNotes: { script: "Transición breve: «Ya vimos cómo un agente entiende escenas, texto y audio, edita con código, usa recursos y aplica criterio. Este reel explica el pipeline y se hizo con él: Codex lo editó en Remotion y sureshot lo verificó.»", timing: "0:40", cues: ["Hacé clic en «Reproducir con sonido». Barra espaciadora pausa y reanuda; las flechas siguen cambiando de slide.", "El video se reproduce en la pantalla donde hacés clic: si proyectás otra ventana, dale play ahí.", "El archivo está en public/talks/video-con-codex/reel.mp4 (render v2 de remotion-lab, 40.7 s)."] },
     },
   ],
 });

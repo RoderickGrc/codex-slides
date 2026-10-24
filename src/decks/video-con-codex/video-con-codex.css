@@ -505,3 +505,18 @@
 .vc-thanks .vc-thanks-alt{margin-top:1.8cqw;font-size:1.8cqw;line-height:1.4;color:var(--slide-muted)}
 .vc-thanks .vc-thanks-alt strong{color:var(--slide-fg);font-weight:600}
 .vc-thanks .vc-thanks-qr{position:absolute;top:5.2cqw;right:6cqw;z-index:2;width:30cqw;height:30cqw;display:block;border-radius:.8cqw;background:#fff}
+
+/* ---------- Added in the deck: the demo reel ---------- */
+/* The player sits in the middle of the slide, text on either side. */
+.vcx .demo{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:3.6cqw;align-items:center;flex:1;min-height:0}
+.vcx .demo .display{margin-top:1.4cqw;font-size:3.7cqw;line-height:1}
+.vcx .demo .display span{color:var(--slide-blue)}
+.vcx .demo .demo-time{display:grid;gap:.6cqw;font-size:1.6cqw;line-height:1.4;color:var(--slide-muted)}
+.vcx .demo .demo-time b{font-size:4.4cqw;line-height:1;color:var(--slide-fg);font-weight:640;font-variant-numeric:tabular-nums;letter-spacing:-.05em}
+.vcx .demo-video{position:relative;height:46cqw;aspect-ratio:9/16;border-radius:1.2cqw;overflow:hidden;background:var(--night)}
+/* contain, not cover: in fullscreen the vertical reel stays whole, with bars at the sides. */
+.vcx .demo-video video{display:block;width:100%;height:100%;object-fit:contain;background:var(--night)}
+.vcx .demo-video video:fullscreen{object-fit:contain;background:#000}
+.vcx .demo-play{position:absolute;left:50%;bottom:1.8cqw;translate:-50% 0;display:inline-flex;align-items:center;gap:.8cqw;padding:1cqw 1.8cqw;border:0;border-radius:999px;background:var(--slide-blue);color:#fff;font-size:1.4cqw;font-weight:600;white-space:nowrap}
+.vcx .demo-play svg{width:1.6cqw;height:1.6cqw}
+.vcx .demo-play:hover{background:#0052cc}
