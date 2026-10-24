@@ -1,307 +1,60 @@
 /*
- * AI Coding (Frank Calderon): composiciones propias de la charla.
- * Todo en cqw y con tokens --slide-* para que el tema oscuro funcione.
+ * AI Coding (Frank Calderon): réplica del PPTX original.
+ * Elementos posicionados en cqw según la geometría del archivo;
+ * fondos fijos crema (#FAFAF7) / negro (#111111) como en la presentación.
  */
 
-/* ---------- 01 · Portada ---------- */
-.fc-cover-sub {
-  display: block;
-  color: var(--slide-purple);
+.fc-pptx {
+  padding: 0 !important;
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 0;
+}
+.fc-light {
+  background: #fafaf7 !important;
+}
+.fc-dark {
+  background: #111111 !important;
 }
 
-/* ---------- 03 · ¿La IA nos va a reemplazar? ---------- */
-.slide-canvas.fc-replace {
-  justify-content: center;
-}
-.fc-replace-mark {
+/* Texto posicionado */
+.fc-e {
   position: absolute;
-  top: 8cqw;
-  right: 14cqw;
-  width: 11cqw;
-  height: 11cqw;
-}
-.fc-replace-face {
-  position: absolute;
-  top: 23cqw;
-  right: 20cqw;
-}
-.fc-replace-q {
-  position: relative;
-  z-index: 2;
-  max-width: 78cqw;
-  font-size: 6.6cqw;
-  font-weight: 640;
-  line-height: 0.98;
-  letter-spacing: -0.055em;
-  text-wrap: balance;
-}
-.fc-replace-o {
-  position: relative;
-  z-index: 2;
-  margin-top: 3.2cqw;
-  max-width: 60cqw;
-  padding-top: 2.2cqw;
-  border-top: 0.14cqw solid var(--slide-purple);
-  color: var(--slide-muted);
-  font-size: 2.3cqw;
-  font-weight: 500;
-  line-height: 1.3;
-}
-
-/* ---------- 04 · Antes / ahora ---------- */
-.fc-shift {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: stretch;
-  gap: 2.4cqw;
-  margin-top: auto;
-  margin-bottom: 2.6cqw;
-}
-.fc-shift-col {
-  padding: 2cqw 2.2cqw;
-  border-radius: var(--dd-radius);
-  background: var(--slide-surface);
-}
-.fc-shift-col h3 {
-  margin-bottom: 1.2cqw;
-  color: var(--slide-muted);
-  font-size: 1.15cqw;
-  font-weight: 550;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.fc-shift-col ul {
-  display: grid;
-  padding: 0;
-  list-style: none;
-}
-.fc-shift-col li {
-  padding: 0.85cqw 0;
-  border-top: 0.08cqw solid var(--slide-border);
-  color: var(--slide-muted);
-  font-size: 1.55cqw;
-  line-height: 1.3;
-}
-.fc-shift-col li:first-child {
-  border-top: 0;
-}
-.fc-shift-col--now {
-  box-shadow: inset 0 0.35cqw 0 var(--slide-purple);
-}
-.fc-shift-col--now h3 {
-  color: var(--slide-purple);
-}
-.fc-shift-col--now li {
-  color: var(--slide-fg);
-  font-weight: 550;
-}
-.fc-shift-arrow {
-  align-self: center;
-  color: var(--slide-purple);
-  font-size: 4cqw;
-  font-weight: 300;
-  line-height: 1;
-}
-
-/* ---------- 05 · Escribir código ≠ desarrollar software ---------- */
-.slide-canvas.fc-vs {
-  justify-content: center;
-}
-.fc-vs-row {
-  display: flex;
-  align-items: center;
-  gap: 4.4cqw;
-}
-.fc-vs-term {
-  max-width: 34cqw;
-  color: var(--slide-muted);
-  font-size: 5.4cqw;
-  font-weight: 640;
-  line-height: 1.02;
-  letter-spacing: -0.05em;
-  text-wrap: balance;
-}
-.fc-vs-term--goal {
-  color: var(--slide-fg);
-}
-.fc-vs-neq {
-  flex: none;
-  color: var(--slide-purple);
-  font-size: 7.5cqw;
-  font-weight: 640;
-  line-height: 1;
-}
-.fc-vs-lead {
-  margin-top: 4cqw;
-  max-width: 52cqw;
-  color: var(--slide-muted);
-  font-size: 1.9cqw;
-  line-height: 1.5;
-}
-.fc-vs-lead strong {
-  color: var(--slide-fg);
-  font-weight: 600;
-}
-
-/* ---------- 06 · Tesis ---------- */
-.slide-canvas.fc-resp {
-  justify-content: center;
-}
-.fc-resp-line {
-  color: var(--slide-muted);
-  font-size: 3.4cqw;
-  font-weight: 500;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-}
-.fc-resp-main {
-  margin-top: 2.2cqw;
-  max-width: 82cqw;
-  font-size: 6.2cqw;
-  font-weight: 640;
-  line-height: 1;
-  letter-spacing: -0.05em;
-  text-wrap: balance;
-}
-
-/* ---------- 07–11 · Las cinco prácticas ---------- */
-.fc-practice-title {
-  margin-top: 1.4cqw;
-  font-size: 5.6cqw;
-  font-weight: 640;
-  line-height: 1;
-  letter-spacing: -0.05em;
-}
-.fc-practice-lede {
-  margin-top: 1.8cqw;
-  max-width: 60cqw;
-  color: var(--slide-muted);
-  font-size: 1.9cqw;
-  line-height: 1.4;
-}
-.fc-practice-body {
-  margin-top: auto;
-}
-.fc-practice-body .dd-cards,
-.fc-practice-body .dd-steps {
-  margin: 0 !important;
-}
-.fc-spec .dd-pill {
-  margin-bottom: 2.2cqw;
-}
-.fc-practice-line {
-  margin-top: 2.2cqw;
-  margin-bottom: 2.4cqw;
-  padding-top: 1.5cqw;
-  border-top: 0.08cqw solid var(--slide-border);
-  color: var(--slide-muted);
-  font-size: 1.5cqw;
-  line-height: 1.4;
-}
-.fc-practice-line strong {
-  color: var(--slide-fg);
-  font-weight: 600;
-}
-
-/* AGENTS.md recreado como tarjeta de archivo. */
-.fc-file {
-  width: 46cqw;
-  overflow: hidden;
-  border: 0.08cqw solid var(--slide-border);
-  border-radius: var(--dd-radius);
-  background: var(--slide-surface);
-}
-.fc-file-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.2cqw;
-  padding: 1.3cqw 1.8cqw;
-  border-bottom: 0.08cqw solid var(--slide-border);
-}
-.fc-file-name {
-  font-size: 1.5cqw;
-  font-weight: 650;
-  letter-spacing: -0.01em;
-}
-.fc-file-list {
-  display: grid;
-  padding: 0.6cqw 0;
-  list-style: none;
-}
-.fc-file-list li {
-  display: flex;
-  align-items: baseline;
-  gap: 0.9cqw;
-  padding: 0.8cqw 1.8cqw;
-  font-size: 1.45cqw;
-  line-height: 1.35;
-}
-.fc-file-list li::before {
-  content: "#";
-  flex: none;
-  color: var(--slide-muted);
-  font-size: 1.15cqw;
-  font-weight: 600;
-}
-
-/* ---------- 12 · Cierre ---------- */
-.slide-canvas.fc-cierre {
-  justify-content: center;
-}
-.fc-cierre .dd-eyebrow {
-  margin-bottom: 2.6cqw;
-}
-.fc-cierre-main {
-  max-width: 84cqw;
-  font-size: 5.6cqw;
-  font-weight: 640;
-  line-height: 1.02;
-  letter-spacing: -0.05em;
-  text-wrap: balance;
-}
-.fc-cierre-muted {
   display: block;
-  color: var(--slide-muted);
-}
-.fc-path {
-  display: flex;
-  align-items: center;
-  gap: 1.6cqw;
-  margin-top: 3.4cqw;
-  font-size: 2cqw;
-  font-weight: 620;
+  line-height: 1.08;
   letter-spacing: -0.02em;
+  font-family: inherit;
 }
-.fc-path i {
-  color: var(--slide-purple);
+
+/* Carita: círculo con ojos de caracteres en su mitad superior */
+.fc-face {
+  position: absolute;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  border-radius: 50%;
+}
+.fc-face i {
+  display: block;
+  margin-top: 28%;
+  color: #171717;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: pre;
 }
-.fc-contact {
+
+/* Rectángulos: tarjetas, reglas y barras */
+.fc-box {
+  position: absolute;
   display: flex;
   align-items: center;
-  gap: 1.2cqw;
-  margin-top: 4.4cqw;
-  margin-bottom: 1.4cqw;
-  padding-top: 1.8cqw;
-  border-top: 0.08cqw solid var(--slide-border);
 }
-.fc-contact-text {
-  display: grid;
-  gap: 0.2cqw;
-}
-.fc-contact-text strong {
-  font-size: 1.6cqw;
-  font-weight: 600;
+.fc-bar-text {
+  display: block;
+  padding-left: 0.8cqw;
+  color: #171717;
+  font-weight: 700;
+  line-height: 1.1;
   letter-spacing: -0.02em;
-}
-.fc-contact-text span {
-  color: var(--slide-muted);
-  font-size: 1.2cqw;
-}
-.fc-cierre-face {
-  position: absolute;
-  top: 9cqw;
-  right: 10cqw;
 }
