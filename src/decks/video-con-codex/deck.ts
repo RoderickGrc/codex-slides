@@ -14,6 +14,7 @@ import {
   EscucharSlide,
   FfmpegMideSlide,
   FotosSueltasSlide,
+  GraciasSlide,
   MapaDeSonidoSlide,
   MovimientoSlide,
   SistemaCompletoSlide,
@@ -30,6 +31,7 @@ export const videoCodexDeck = defineTalk({
   speaker: speakers.rodrigo,
   accent: "#8a8d82",
   coverComponent: AperturaSlide,
+  closingComponent: GraciasSlide,
   brief: {
     goal: "Qué necesita un agente para entender, construir y revisar una edición de video.",
     topics: [

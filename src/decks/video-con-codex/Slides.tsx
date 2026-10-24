@@ -1,7 +1,12 @@
 import { useEffect, useRef, type ReactNode } from "react";
+import { speakers } from "../../devday/speakers";
+import { Crowd } from "../kit/Crowd";
+import { closingCrowd } from "../kit/crowd-layout";
+import { Eyebrow, SlideFace, SlideFrame } from "../kit/layouts";
 import { useSlideInfo } from "../kit/SlideInfo";
 import "./video-con-codex.css";
 import giftQr from "./agentic-edition-studio-qr.png";
+import reelFrame from "./reel-editar-con-codigo.jpg";
 import footerFace from "./pages/footer-face.svg?raw";
 import apertura from "./pages/01-apertura.html?raw";
 import desafio from "./pages/02-el-desafio.html?raw";
@@ -112,7 +117,7 @@ export const EdicionComoCodigoSlide = () => <Page html={edicionComoCodigo} />;
 export const TallerSlide = () => <Page html={taller} />;
 export const BibliotecaDeEfectosSlide = () => <Page html={bibliotecaDeEfectos} />;
 export const CriterioEnArchivosSlide = () => <Page html={criterioEnArchivos} />;
-export const AplicarElCriterioSlide = () => <Page html={aplicarElCriterio} />;
+export const AplicarElCriterioSlide = () => <Page html={aplicarElCriterio.replace("{{reel}}", reelFrame)} />;
 export const SistemaCompletoSlide = () => <Page html={sistemaCompleto} />;
 export const SureshotSlide = () => (
   <Page html={sureshot}>
@@ -121,13 +126,30 @@ export const SureshotSlide = () => (
       <div>
         <b>Regalo</b>
         <p>Todo este sistema, disponible para ti.</p>
-        <code>
-          github.com/RoderickGrc/
-          <br />
-          agentic-edition-studio
-        </code>
       </div>
+      <code>
+        github.com/RoderickGrc/
+        <br />
+        agentic-edition-studio
+      </code>
     </aside>
   </Page>
 );
 export const ALasDemosSlide = () => <Page html={aLasDemos} className="to-demos" footer={false} />;
+
+/* Replaces the kit's closing slide: thanks and where to find Rodrigo. */
+export function GraciasSlide() {
+  return (
+    <SlideFrame className="dd-closing vc-thanks" footer={false}>
+      <Crowd faces={closingCrowd({ x: 40, y: 18 })} className="dd-closing-crowd" />
+      <Eyebrow>¿Preguntas?</Eyebrow>
+      <h1 className="dd-display">
+        Gracias.
+        <SlideFace face={{ ...speakers.rodrigo.face, gaze: { x: -0.3, y: 0.35 } }} size={9} className="dd-closing-face" />
+      </h1>
+      <p className="dd-lead">
+        Si quieres conocer más de lo que hago, visita mi página en <strong>rod.run</strong> o háblame en LinkedIn: <strong>linkedin.com/in/rodgrc</strong>
+      </p>
+    </SlideFrame>
+  );
+}

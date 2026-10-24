@@ -473,9 +473,22 @@
 @media (prefers-reduced-motion:reduce){.vcx.is-live .playhead i{animation:none;opacity:0}}
 
 /* ---------- Added in the deck: gift QR on the sureshot slide ---------- */
-.vcx .gift{position:absolute;top:9.4cqw;right:6cqw;z-index:3;display:grid;grid-template-columns:auto 13.4cqw;align-items:center;gap:1.2cqw}
-.vcx .gift img{width:8.6cqw;height:8.6cqw;display:block;border-radius:.6cqw;box-shadow:0 0 0 .08cqw var(--slide-border)}
-.vcx .gift div{display:grid;gap:.4cqw}
+/* As large as the free corner allows: it has to scan from the back of a 350-seat room. */
+.vcx .gift{position:absolute;top:7.6cqw;right:6cqw;z-index:3;display:grid;grid-template-columns:9.4cqw 14cqw;column-gap:1.4cqw;row-gap:.5cqw;align-items:center}
+.vcx .gift img{grid-column:2;grid-row:1;width:14cqw;height:14cqw;display:block;border-radius:.6cqw;box-shadow:0 0 0 .08cqw var(--slide-border)}
+.vcx .gift div{grid-column:1;grid-row:1;display:grid;gap:.5cqw}
 .vcx .gift b{font-size:1.05cqw;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--slide-blue)}
-.vcx .gift p{font-size:1.35cqw;font-weight:600;line-height:1.25;letter-spacing:-.02em}
-.vcx .gift code{font-family:var(--mono);font-size:.9cqw;line-height:1.4;color:var(--slide-muted);padding:0;background:none}
+.vcx .gift p{font-size:1.45cqw;font-weight:600;line-height:1.25;letter-spacing:-.02em}
+.vcx .gift code{grid-column:2;grid-row:2;font-family:var(--mono);font-size:.85cqw;line-height:1.4;text-align:center;color:var(--slide-muted);padding:0;background:none}
+
+/* ---------- Added in the deck: the two vertical frames of "aplicar el criterio" ---------- */
+/* Sin intención: deliberately loud, every word fights for attention. */
+.vcx .scr.ugly .ug-banner{position:absolute;top:1.2cqw;left:50%;translate:-50% 0;rotate:-6deg;padding:.25cqw .7cqw;background:#ff0000;color:#fff200;font-size:1.1cqw;font-weight:900;letter-spacing:.02em;white-space:nowrap;box-shadow:.25cqw .25cqw 0 #000}
+.vcx .scr.ugly .ug-emoji{position:absolute;font-size:2.3cqw;line-height:1;font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif}
+.vcx .cap.ug-cap{bottom:2.4cqw;left:.5cqw;right:.5cqw;rotate:-4deg;font-size:1.5cqw;font-weight:900;line-height:1.05;letter-spacing:0;-webkit-text-stroke:.16cqw #000;paint-order:stroke fill;text-shadow:.18cqw .18cqw 0 #000}
+/* Con criterio: a real frame of the pipeline reel (remotion-lab, 261024-devday-pipeline-reel). */
+.vcx .scr.reel{background:#fff;box-shadow:0 0 0 .08cqw var(--slide-border)}
+.vcx .scr.reel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+
+/* ---------- Added in the deck: closing slide ---------- */
+.vc-thanks .dd-lead{max-width:72cqw;font-size:2.2cqw}
