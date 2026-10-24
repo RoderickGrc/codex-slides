@@ -26,7 +26,7 @@ Sin `VITE_CONVEX_URL` aparece **«No ha sido configurado Convex»**: el modo loc
 | DevDay Exchange San Salvador (apertura) | `devday-exchange-san-salvador` | Ai Labs | 6 |
 | De una idea a algo que funciona con Codex | `codex-en-la-nube` | Walter Morales | 10 |
 | Notion × Codex: de tus notas al trabajo hecho | `notion-codex` | Daniela Huezo | 10 |
-| Cómo enseñarle a Codex a editar video | `video-con-codex` | Rodrigo Garciaguirre | 21 |
+| Cómo enseñarle a Codex a editar video | `video-con-codex` | Rodrigo Garciaguirre | 22 |
 | Dots: ayuda que le da seguimiento a tus pendientes | `dots` | Saul Calderon | 10 |
 | Un asistente que trabaja entre tus herramientas | `agents-api` | Fernando Borea | 10 |
 | AI Coding | `decisions-api` | Frank Calderon | 15 |

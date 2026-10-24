@@ -17,6 +17,7 @@ import {
   GraciasSlide,
   MapaDeSonidoSlide,
   MovimientoSlide,
+  RegaloSlide,
   SistemaCompletoSlide,
   SureshotSlide,
   TallerSlide,
@@ -195,6 +196,14 @@ export const videoCodexDeck = defineTalk({
       component: SureshotSlide,
       guide: { intro: "sureshot corre estos pasos sobre un video y guarda cada evento en una sola línea de tiempo. No interpreta: deja evidencia para que el agente decida." },
       speakerNotes: { script: "Las capas 01 y 02 de la charla ya viven en una herramienta propia, sureshot. Es la que va a correr en el video del demo.", timing: "0:45", cues: ["Orden real del análisis: identifica el archivo (ffprobe y un hash), busca cortes de escena con FFmpeg (umbral 0.4, más estricto que el 0.3 del ejemplo anterior), pantallas en negro y congeladas; mide movimiento comparando un fotograma por segundo reducido a 160 × 90 en gris; mide silencios (−30 dB, medio segundo) y cambios de energía; transcribe con faster-whisper con tiempo por palabra; cruza audio y video (por ejemplo, silencio mientras hay mucho movimiento) y recién al final decide cuántos fotogramas leer con OCR según qué tan denso es el video.", "Las líneas punteadas son la idea clave: el OCR lee justo después de cada corte. Los eventos baratos (FFmpeg) deciden dónde gastar los caros (modelos).", "Todo queda en una base SQLite. El agente no relee el video: pide el mapa, abre un tramo con inspect o exporta un reporte. La interpretación (gancho, ritmo, CTA) la hace Codex después, separada de la evidencia."] },
+    },
+    {
+      slug: "regalo",
+      title: "Todo este sistema, disponible para ti.",
+      kicker: "Regalo · opcional",
+      component: RegaloSlide,
+      guide: { intro: "El repositorio con todo el sistema: github.com/RoderickGrc/agentic-edition-studio." },
+      speakerNotes: { script: "Por si hace falta: el mismo QR de la slide anterior, a pantalla grande. Dejalo unos segundos para que lo escaneen desde el fondo.", timing: "Opcional", cues: ["Si no hay tiempo, saltala: el QR ya estuvo en la slide de sureshot."] },
     },
     {
       slug: "a-las-demos",

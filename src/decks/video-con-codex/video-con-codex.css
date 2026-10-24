@@ -490,5 +490,18 @@
 .vcx .scr.reel{background:#fff;box-shadow:0 0 0 .08cqw var(--slide-border)}
 .vcx .scr.reel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 
+/* ---------- Added in the deck: full-size gift QR ---------- */
+.vcx .regalo{display:grid;grid-template-columns:minmax(0,1fr) 38cqw;gap:4cqw;align-items:center;flex:1;min-height:0;margin-bottom:2cqw}
+.vcx .regalo .heading{max-width:44cqw}
+.vcx .regalo .lead{max-width:44cqw}
+.vcx .regalo code{display:block;margin-top:2.4cqw;font-family:var(--mono);font-size:1.5cqw;color:var(--slide-blue)}
+.vcx .regalo img{width:38cqw;height:38cqw;display:block;border-radius:.8cqw;box-shadow:0 0 0 .08cqw var(--slide-border)}
+
 /* ---------- Added in the deck: closing slide ---------- */
-.vc-thanks .dd-lead{max-width:72cqw;font-size:2.2cqw}
+/* rod.run leads, with a QR big enough for the back of the room; the crowd keeps the bottom band. */
+.vc-thanks .vc-thanks-text{position:relative;z-index:2;max-width:58cqw}
+.vc-thanks .dd-lead{max-width:56cqw;font-size:2.2cqw}
+.vc-thanks .vc-thanks-url{margin-top:.6cqw;font-size:7.4cqw;font-weight:640;line-height:1;letter-spacing:-.055em;color:var(--slide-blue)}
+.vc-thanks .vc-thanks-alt{margin-top:1.8cqw;font-size:1.8cqw;line-height:1.4;color:var(--slide-muted)}
+.vc-thanks .vc-thanks-alt strong{color:var(--slide-fg);font-weight:600}
+.vc-thanks .vc-thanks-qr{position:absolute;top:5.2cqw;right:6cqw;z-index:2;width:30cqw;height:30cqw;display:block;border-radius:.8cqw;background:#fff}

@@ -7,6 +7,7 @@ import { useSlideInfo } from "../kit/SlideInfo";
 import "./video-con-codex.css";
 import giftQr from "./agentic-edition-studio-qr.png";
 import reelFrame from "./reel-editar-con-codigo.jpg";
+import rodRunQr from "./rod-run-qr.png";
 import footerFace from "./pages/footer-face.svg?raw";
 import apertura from "./pages/01-apertura.html?raw";
 import desafio from "./pages/02-el-desafio.html?raw";
@@ -135,21 +136,40 @@ export const SureshotSlide = () => (
     </aside>
   </Page>
 );
+/* Not in the original: the gift QR at full size, in case the corner one is too small to scan. */
+export const RegaloSlide = () => (
+  <Page html="">
+    <div className="regalo">
+      <div>
+        <p className="eyebrow">Regalo</p>
+        <h2 className="heading">Todo este sistema, disponible para ti.</h2>
+        <p className="lead">sureshot para percibir, Remotion para editar y la wiki para decidir, en un solo repositorio.</p>
+        <code>github.com/RoderickGrc/agentic-edition-studio</code>
+      </div>
+      <img src={giftQr} alt="Código QR a github.com/RoderickGrc/agentic-edition-studio" />
+    </div>
+  </Page>
+);
 export const ALasDemosSlide = () => <Page html={aLasDemos} className="to-demos" footer={false} />;
 
-/* Replaces the kit's closing slide: thanks and where to find Rodrigo. */
+/* Replaces the kit's closing slide: thanks, with rod.run first and its QR. */
 export function GraciasSlide() {
   return (
     <SlideFrame className="dd-closing vc-thanks" footer={false}>
       <Crowd faces={closingCrowd({ x: 40, y: 18 })} className="dd-closing-crowd" />
-      <Eyebrow>¿Preguntas?</Eyebrow>
-      <h1 className="dd-display">
-        Gracias.
-        <SlideFace face={{ ...speakers.rodrigo.face, gaze: { x: -0.3, y: 0.35 } }} size={9} className="dd-closing-face" />
-      </h1>
-      <p className="dd-lead">
-        Si quieres conocer más de lo que hago, visita mi página en <strong>rod.run</strong> o háblame en LinkedIn: <strong>linkedin.com/in/rodgrc</strong>
-      </p>
+      <div className="vc-thanks-text">
+        <Eyebrow>¿Preguntas?</Eyebrow>
+        <h1 className="dd-display">
+          Gracias.
+          <SlideFace face={{ ...speakers.rodrigo.face, gaze: { x: -0.3, y: 0.35 } }} size={9} className="dd-closing-face" />
+        </h1>
+        <p className="dd-lead">Si quieres conocer más de lo que hago, visita mi página:</p>
+        <p className="vc-thanks-url">rod.run</p>
+        <p className="vc-thanks-alt">
+          o háblame en LinkedIn: <strong>linkedin.com/in/rodgrc</strong>
+        </p>
+      </div>
+      <img className="vc-thanks-qr" src={rodRunQr} alt="Código QR a rod.run" />
     </SlideFrame>
   );
 }
