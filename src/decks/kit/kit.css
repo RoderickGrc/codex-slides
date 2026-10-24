@@ -81,6 +81,13 @@
   width: var(--size);
   height: var(--size);
 }
+/* A face's circle touches its viewBox; let the anti-aliased edge paint outside it, or small faces
+   (the footer's) look clipped flat at the sides. */
+.dd-face svg,
+.dd-footer-face svg,
+.dd-crowd-item svg {
+  overflow: visible;
+}
 
 /* ---------- Footer ---------- */
 .dd-footer {
