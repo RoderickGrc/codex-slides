@@ -2,6 +2,7 @@ import { speakers } from "../../devday/speakers";
 import { defineTalk } from "../kit/talk";
 import {
   ALasDemosSlide,
+  AperturaSlide,
   AplicarElCriterioSlide,
   BibliotecaDeEfectosSlide,
   CriterioEnArchivosSlide,
@@ -28,6 +29,7 @@ export const videoCodexDeck = defineTalk({
   topic: "Codex · Edición de video",
   speaker: speakers.rodrigo,
   accent: "#8a8d82",
+  coverComponent: AperturaSlide,
   brief: {
     goal: "Qué necesita un agente para entender, construir y revisar una edición de video.",
     topics: [
