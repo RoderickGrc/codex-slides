@@ -21,13 +21,17 @@ describe("DevDay decks", () => {
     }
   });
 
-  it("starts every deck with the shared 00 cover and ends talks with questions", () => {
-    for (const deck of decks) {
+  it("starts shared-structure decks with the 00 cover and ends their talks with questions", () => {
+    // decisions-api is built slide-by-slide from Frank's PPTX (12 slides, no
+    // shared cover/brief/questions), so it opts out of the defineTalk shape.
+    const sharedDecks = decks.filter((deck) => deck.slug !== "decisions-api");
+    const sharedTalkDecks = talkDecks.filter((deck) => deck.slug !== "decisions-api");
+    for (const deck of sharedDecks) {
       expect(deck.firstSlideNumber).toBe(0);
       expect(deck.slides[0].slug).toBe("espera");
       expect(deck.slides[0].question).toBeUndefined();
     }
-    for (const deck of talkDecks) {
+    for (const deck of sharedTalkDecks) {
       expect(deck.slides.at(-1)?.slug).toBe("preguntas");
     }
   });
